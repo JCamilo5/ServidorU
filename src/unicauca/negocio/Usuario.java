@@ -16,19 +16,31 @@ public class Usuario {
     private String fechaNaci;
     private String user;
     private String password;
+    private String privilegio;
     
     public Usuario(){
-        super();
+        
     }
 
-    public Usuario(String cedula, String nombres, String apellidos, String fechaNaci, String user, String password) {
+    public Usuario(String cedula, String nombres, String apellidos, String fechaNaci, String user, String password, String privilegio) {
         this.cedula = cedula;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.fechaNaci = fechaNaci;
         this.user = user;
         this.password = password;
+        this.privilegio = privilegio;
     }
+
+    public String getPrivilegio() {
+        return privilegio;
+    }
+
+    public void setPrivilegio(String privilegio) {
+        this.privilegio = privilegio;
+    }
+
+   
 
     public String getCedula() {
         return cedula;

@@ -29,6 +29,7 @@ public class Serializar {
         jsonobj.addProperty("fechaNaci", objUsuario.getFechaNaci());
         jsonobj.addProperty("user", objUsuario.getUser());
         jsonobj.addProperty("password", objUsuario.getPassword());
+        jsonobj.addProperty("privilegio", objUsuario.getPrivilegio());
        
         return jsonobj;
     }

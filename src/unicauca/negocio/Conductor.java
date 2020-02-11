@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Conductor {
     private String cedula;
     private String nombres;
-    private String Apellidos;
+    private String apellidos;
     private String genero;
     private String fechaNaci;
     
@@ -26,7 +26,7 @@ public class Conductor {
     public Conductor(String cedula, String nombres, String Apellidos, String genero, String fechaNaci) {
         this.cedula = cedula;
         this.nombres = nombres;
-        this.Apellidos = Apellidos;
+        this.apellidos = Apellidos;
         this.genero = genero;
         this.fechaNaci = fechaNaci;
 
@@ -50,11 +50,11 @@ public class Conductor {
     }
 
     public String getApellidos() {
-        return Apellidos;
+        return apellidos;
     }
 
     public void setApellidos(String Apellidos) {
-        this.Apellidos = Apellidos;
+        this.apellidos = Apellidos;
     }
 
     public String getFechaNaci() {

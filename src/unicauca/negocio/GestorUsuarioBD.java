@@ -7,6 +7,7 @@ package unicauca.negocio;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.management.monitor.Monitor;
 
 /**
  *
@@ -17,7 +18,7 @@ public class GestorUsuarioBD {
     private final ConectorJdbc conector;
 
     public GestorUsuarioBD() {
-        this.conector = new ConectorJdbc();
+        this.conector = ConectorJdbc.getConector();
     }
 
     public Usuario consultarUsuario(String user, String password) throws ClassNotFoundException, SQLException {
@@ -31,7 +32,8 @@ public class GestorUsuarioBD {
             String user_fechaNaci = conector.getResultado().getString("fechaNaci");
             String user_user = conector.getResultado().getString("user");
             String user_password = conector.getResultado().getString("password");
-            miUsuario = new Usuario(user_cedula, user_nombres, user_apellidos, user_fechaNaci, user, password);
+            String user_privilegio = conector.getResultado().getString("privilegio");
+            miUsuario = new Usuario(user_cedula, user_nombres, user_apellidos, user_fechaNaci, user_user, user_password,user_privilegio);
         }
         conector.desconectarse();
         return miUsuario;

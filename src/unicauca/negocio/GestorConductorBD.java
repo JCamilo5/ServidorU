@@ -17,9 +17,37 @@ public class GestorConductorBD {
     private final ConectorJdbc conector;
 
     public GestorConductorBD() {
-        this.conector = new ConectorJdbc();
+        this.conector = ConectorJdbc.getConector();
     }
-
+    public void agregarConductor(String cedula,String nombres, String apellidos, String genero,String fechaNaci) throws ClassNotFoundException, SQLException{
+        //Las columnas de tipo var charying requieren ir entre comillas dobles por eso ls backslash
+        conector.conectarse();
+        String sqlCo = "INSERT INTO "
+                + "CONDUCTOR "
+                + "(idcedulacond,connombres,conapellidos,congenero,"+"\"conFechaNaci\""+") "
+                + "VALUES ('"+cedula+"','"+nombres+"','"+apellidos+"','"+genero+"','"+fechaNaci+"');";
+        conector.actualizar(sqlCo);
+        conector.desconectarse();
+    }
+    
+    public void agregarVehiculo(String placa,String marca,String tipo) throws ClassNotFoundException, SQLException{
+        conector.conectarse();
+        String sqlVe ="INSERT INTO "
+                + "vehiculo"
+                + " (NOPLACA,MARCA,TIPO) "
+                + "VALUES('"+placa+"','"+marca+"','"+tipo+"')";
+        conector.actualizar(sqlVe);
+        conector.desconectarse();
+    }
+    
+    public void asociarVehiculo(String cedula,String placa) throws ClassNotFoundException, SQLException{
+        conector.conectarse();
+        String sql = "INSERT INTO conducvehicul (idcedulacond,noplaca) values "
+                +"('"+cedula+"','"+placa+"');";
+        conector.actualizar(sql);
+        conector.desconectarse();
+    }
+    
     public Conductor consultarConductor(String cedula) throws ClassNotFoundException, SQLException {
         conector.conectarse();
 

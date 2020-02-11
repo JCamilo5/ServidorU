@@ -220,14 +220,40 @@ public class ServidorUnicauca implements Runnable {
                 if (rol.isEmpty()) {
 
                     salidaDecorada.println("No se encontraron roles");
-                    
+
                 } else {
-                    
+
                     salidaDecorada.println(rol);
                 }
 
                 break;
-
+            case "Agregar Vehiculo":
+                String placa_ve = parametros[1];
+                String marca_ve = parametros[2];
+                String tipo_ve = parametros[3];
+                
+                gestorConductor.agregarVehiculo(placa_ve, marca_ve, tipo_ve);
+                salidaDecorada.println("Vehiculo agregado con exito");
+                break;
+            
+            case "Registrar Conductor":
+                String cedula_con = parametros[1];
+                String nombres_con = parametros[2];
+                String apellidos_con  = parametros[3];
+                String genero_con = parametros[4];
+                String fechaNaci = parametros[5];
+                
+                gestorConductor.agregarConductor(cedula_con, nombres_con, apellidos_con, genero_con, fechaNaci);
+                salidaDecorada.println("Conductor Agregado");
+                break;
+            
+            case "Asociar Vehiculo":
+                String ced = parametros[1];
+                String ve_placa = parametros[2];
+                gestorConductor.asociarVehiculo(ced, ve_placa);
+                salidaDecorada.println("Asociacion Exitosa");
+                break;
+                
         }
     }
 }
