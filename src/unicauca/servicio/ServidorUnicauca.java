@@ -28,6 +28,7 @@ public class ServidorUnicauca implements Runnable {
 
     private GestorUsuarioBD gestorUsuarios;
     private GestorConductorBD gestorConductor;
+    private GestorVigilanteBD gestorVigilante;
     private Parqueadero parqueadero;
     private final Serializar objSerializador;
 
@@ -40,6 +41,7 @@ public class ServidorUnicauca implements Runnable {
     public ServidorUnicauca() {
         gestorUsuarios = new GestorUsuarioBD();
         gestorConductor = new GestorConductorBD();
+        gestorVigilante = new GestorVigilanteBD();
         parqueadero = new Parqueadero();
         objSerializador = new Serializar();
     }
@@ -260,6 +262,25 @@ public class ServidorUnicauca implements Runnable {
                 }else{
                     salidaDecorada.println(objSerializador.serializarBahias(bahias));
                 }
+                break;
+            
+            case "Agregar Vigilante":
+                String vig_ced = parametros[1];
+                String emp = parametros[2];
+                String usu = parametros[3];
+                String nom = parametros[4];
+                String apell = parametros[5];
+                String gen = parametros[6];
+                String fecNa = parametros[7];
+                String cont = parametros[8];
+                String pues = parametros[9];
+                try {
+                    gestorVigilante.agregarVigilante(vig_ced, emp, usu, nom, apell, gen, fecNa, cont, pues);
+                    salidaDecorada.println("Registro Exitoso");
+                } catch (Exception e) {
+                    salidaDecorada.println("Fallo al registrar");
+                }
+            
         }
     }
 }
