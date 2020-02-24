@@ -28,6 +28,7 @@ public class ServidorUnicauca implements Runnable {
 
     private GestorUsuarioBD gestorUsuarios;
     private GestorConductorBD gestorConductor;
+    private Parqueadero parqueadero;
     private final Serializar objSerializador;
 
     private static ServerSocket serverSocket;
@@ -39,6 +40,7 @@ public class ServidorUnicauca implements Runnable {
     public ServidorUnicauca() {
         gestorUsuarios = new GestorUsuarioBD();
         gestorConductor = new GestorConductorBD();
+        parqueadero = new Parqueadero();
         objSerializador = new Serializar();
     }
 
@@ -211,22 +213,6 @@ public class ServidorUnicauca implements Runnable {
                 }
                 break;
 
-            case "Consultar Roles":
-
-                String cedula = parametros[1];
-                String rol;
-                rol = gestorConductor.consultarRoles(cedula);
-
-                if (rol.isEmpty()) {
-
-                    salidaDecorada.println("No se encontraron roles");
-
-                } else {
-
-                    salidaDecorada.println(rol);
-                }
-
-                break;
             case "Agregar Vehiculo":
                 String placa_ve = parametros[1];
                 String marca_ve = parametros[2];
@@ -253,7 +239,27 @@ public class ServidorUnicauca implements Runnable {
                 gestorConductor.asociarVehiculo(ced, ve_placa);
                 salidaDecorada.println("Asociacion Exitosa");
                 break;
+            
+            case "Ingresar Vehiculo":
+                con_cedula = parametros[1];
+                ve_placa = parametros[2];
+                int bahia = Integer.parseInt(parametros[3]);
+                try {
+                   parqueadero.registrarIngreso(con_cedula,ve_placa, bahia); 
+                   salidaDecorada.println("Registro Exitoso");
+                } catch (Exception e) {
+                    salidaDecorada.println("Fallo al registrar");
+                } 
+                break;
                 
+            case "Obtener Ocupados":
+                ArrayList<Bahia> bahias = new ArrayList<>();
+                bahias = parqueadero.consutarOcupados();
+                if(bahias.isEmpty()){
+                    salidaDecorada.println("Parqueadero libre");
+                }else{
+                    salidaDecorada.println(objSerializador.serializarBahias(bahias));
+                }
         }
     }
 }

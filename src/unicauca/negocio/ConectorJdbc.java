@@ -18,7 +18,7 @@ public class ConectorJdbc {
     private Connection conexion;
     private ResultSet resultado;
     private Statement estamento;
-    private final String url = "jdbc:postgresql://localhost:5432/Unicauca";
+    private final String url = "jdbc:postgresql://localhost:5432/Parqueadero";
     private final String usuario = "postgres";
     private final String contrasenia = "system";
 
@@ -32,7 +32,7 @@ public class ConectorJdbc {
      * Metodo estatico que devuelve una sola instancia de la clase
      * @return unica instancia de la clase
      */
-    public synchronized static ConectorJdbc getConector(){
+    public  static ConectorJdbc getConector(){
         if(conector == null){
             conector = new ConectorJdbc();
         }

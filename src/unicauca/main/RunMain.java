@@ -25,8 +25,8 @@ import utilidades.*;
 public class RunMain {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
-        ServidorUnicauca servidor = new ServidorUnicauca();
-        servidor.iniciar();
-
+      ServidorUnicauca servidor = new ServidorUnicauca();
+      servidor.iniciar(); 
+     
     }
 }

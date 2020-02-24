@@ -13,6 +13,7 @@ public class Usuario {
     private String cedula;
     private String nombres;
     private String apellidos;
+    private String genero;
     private String fechaNaci;
     private String user;
     private String password;
@@ -22,10 +23,11 @@ public class Usuario {
         
     }
 
-    public Usuario(String cedula, String nombres, String apellidos, String fechaNaci, String user, String password, String privilegio) {
+    public Usuario(String cedula, String nombres, String apellidos,String genero, String fechaNaci, String user, String password, String privilegio) {
         this.cedula = cedula;
         this.nombres = nombres;
         this.apellidos = apellidos;
+        this.genero = genero;
         this.fechaNaci = fechaNaci;
         this.user = user;
         this.password = password;
@@ -89,4 +91,13 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+    
 }

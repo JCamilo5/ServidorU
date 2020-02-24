@@ -15,14 +15,14 @@ import unicauca.negocio.*;
  * @author JuanCamilo
  */
 public class Serializar {
-    
+
     public Serializar() {
         super();
     }
-    public JsonObject parseToJSONUsuario(Usuario objUsuario) 
-    {
+
+    public JsonObject parseToJSONUsuario(Usuario objUsuario) {
         JsonObject jsonobj = new JsonObject();
-        
+
         jsonobj.addProperty("cedula", objUsuario.getCedula());
         jsonobj.addProperty("nombres", objUsuario.getNombres());
         jsonobj.addProperty("apellidos", objUsuario.getApellidos());
@@ -30,54 +30,55 @@ public class Serializar {
         jsonobj.addProperty("user", objUsuario.getUser());
         jsonobj.addProperty("password", objUsuario.getPassword());
         jsonobj.addProperty("privilegio", objUsuario.getPrivilegio());
-       
+
         return jsonobj;
     }
-    public JsonObject parseToJSONConductor(Conductor objConductor){
+
+    public JsonObject parseToJSONConductor(Conductor objConductor) {
         JsonObject jsonobj = new JsonObject();
         jsonobj.addProperty("cedula", objConductor.getCedula());
         jsonobj.addProperty("nombres", objConductor.getNombres());
         jsonobj.addProperty("apellidos", objConductor.getApellidos());
         jsonobj.addProperty("genero", objConductor.getGenero());
         jsonobj.addProperty("fechaNaci", objConductor.getFechaNaci());
+        jsonobj.addProperty("rol", objConductor.getRol());
         return jsonobj;
     }
-    public String serializarVehiculos(ArrayList<Vehiculo> objVehiculos){
+
+    public String serializarVehiculos(ArrayList<Vehiculo> objVehiculos) {
         JsonArray array = new JsonArray();
         JsonObject objJson;
-        for(Vehiculo vehiculo:objVehiculos){
-            
+        for (Vehiculo vehiculo : objVehiculos) {
+
             objJson = parseToVehiculo(vehiculo);
             array.add(objJson);
         }
         return array.toString();
     }
-    
-    public String serializarRoles(ArrayList<String> objRoles){
+
+    public String serializarBahias(ArrayList<Bahia> objBahias) {
         JsonArray array = new JsonArray();
         JsonObject objJson;
-        
-        for (String rol:objRoles) {
-            objJson = parseToRol(rol);
+        for (Bahia b : objBahias) {
+            objJson = parseToBahia(b);
             array.add(objJson);
         }
         return array.toString();
     }
     
-    public JsonObject parseToRol(String rol){
+    public JsonObject parseToBahia(Bahia objBahia){
         JsonObject jsonobj = new JsonObject();
-        jsonobj.addProperty("rol", rol);
-        
+        jsonobj.addProperty("identificador", objBahia.getIdentificador());
         return jsonobj;
     }
     
-    public JsonObject parseToVehiculo(Vehiculo objVehiculo){
+    public JsonObject parseToVehiculo(Vehiculo objVehiculo) {
         JsonObject jsonobj = new JsonObject();
-        
+
         jsonobj.addProperty("placa", objVehiculo.getPlaca());
         jsonobj.addProperty("marca", objVehiculo.getMarca());
         jsonobj.addProperty("tipo", objVehiculo.getTipo());
-        
+
         return jsonobj;
     }
 }

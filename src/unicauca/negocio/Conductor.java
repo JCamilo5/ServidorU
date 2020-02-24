@@ -17,19 +17,19 @@ public class Conductor {
     private String apellidos;
     private String genero;
     private String fechaNaci;
-    
+    private String rol;
     
     public Conductor(){
-        super();  
+          
     }
 
-    public Conductor(String cedula, String nombres, String Apellidos, String genero, String fechaNaci) {
+    public Conductor(String cedula, String nombres, String Apellidos, String genero, String fechaNaci,String rol) {
         this.cedula = cedula;
         this.nombres = nombres;
         this.apellidos = Apellidos;
         this.genero = genero;
         this.fechaNaci = fechaNaci;
-
+        this.rol = rol;
     }
     
 
@@ -72,5 +72,14 @@ public class Conductor {
     public void setGenero(String genero) {
         this.genero = genero;
     }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
 
 }

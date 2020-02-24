@@ -19,12 +19,22 @@ public class GestorConductorBD {
     public GestorConductorBD() {
         this.conector = ConectorJdbc.getConector();
     }
+    /**
+     * Metodo que inserta un conductor en la base de datos
+     * @param cedula cedula del conductor
+     * @param nombres nombres de l conductor
+     * @param apellidos apellidos del conductor
+     * @param genero genero del conductor
+     * @param fechaNaci fecha de nacimineto del conductor
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void agregarConductor(String cedula,String nombres, String apellidos, String genero,String fechaNaci) throws ClassNotFoundException, SQLException{
         //Las columnas de tipo var charying requieren ir entre comillas dobles por eso ls backslash
         conector.conectarse();
         String sqlCo = "INSERT INTO "
-                + "CONDUCTOR "
-                + "(idcedulacond,connombres,conapellidos,congenero,"+"\"conFechaNaci\""+") "
+                + "conductor "
+                + "(idcedulacond,connombres,conapellidos,congenero,confechanacimiento)"
                 + "VALUES ('"+cedula+"','"+nombres+"','"+apellidos+"','"+genero+"','"+fechaNaci+"');";
         conector.actualizar(sqlCo);
         conector.desconectarse();
@@ -51,15 +61,16 @@ public class GestorConductorBD {
     public Conductor consultarConductor(String cedula) throws ClassNotFoundException, SQLException {
         conector.conectarse();
 
-        conector.crearConsulta("select * from conductor where idcedulacond = '" + cedula + "'");
+        conector.crearConsulta("SELECT * FROM conductor WHERE idcedulacond = '" + cedula + "'");
         Conductor conductor = null;
         if (conector.getResultado().next()) {
             String con_cedula = conector.getResultado().getString("idcedulacond");
             String con_nombres = conector.getResultado().getString("connombres");
             String con_apellidos = conector.getResultado().getString("conapellidos");
             String con_genero = conector.getResultado().getString("congenero");
-            String con_fechaNaci = conector.getResultado().getString("conFechaNaci");
-            conductor = new Conductor(con_cedula, con_nombres, con_apellidos, con_genero, con_fechaNaci);
+            String con_fechaNaci = conector.getResultado().getString("confechanacimiento");
+            String con_rol = consultarRoles(cedula);
+            conductor = new Conductor(con_cedula, con_nombres, con_apellidos, con_genero, con_fechaNaci,con_rol);
         }
         conector.desconectarse();
         return conductor;
@@ -67,10 +78,10 @@ public class GestorConductorBD {
 
     public ArrayList<Vehiculo> consultarVehiculoCon(String cedula) throws ClassNotFoundException, SQLException {
         conector.conectarse();
-        String consulta = "select v.noplaca,v.marca,v.tipo\n"
+        String consulta = "SELECT v.noplaca,v.marca,v.tipo\n"
                 + "FROM\n"
-                + "conducvehicul cv inner join vehiculo v on cv.noplaca = v.noplaca\n"
-                + "where cv.idcedulacond = '" + cedula + "'";
+                + "conducvehicul cv INNER JOIN vehiculo v on cv.noplaca = v.noplaca\n"
+                + "WHERE cv.idcedulacond = '" + cedula + "'";
         conector.crearConsulta(consulta);
         ArrayList<Vehiculo> mis_vehiculos = new ArrayList<>();
         Vehiculo miVehiculo;
@@ -84,14 +95,20 @@ public class GestorConductorBD {
         conector.desconectarse();
         return mis_vehiculos;
     }
-
-    public String consultarRoles(String cedula) throws ClassNotFoundException, SQLException {
+    /**
+     * Metodo que devuelve el rol de un conductor teniedo en cuenta su prioridad
+     * @param cedula cirterio de busqueda
+     * @return rol
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    private String consultarRoles(String cedula) throws ClassNotFoundException, SQLException {
         conector.conectarse();
-        String consulta = "select r.rol\n"
+        String consulta = "SELECT r.rol\n"
                 + "FROM\n"
-                + "rolconduc rc inner join roles r\n"
-                + "on rc.idrol = r.idrol\n"
-                + "where rc.idcedulacond = '"+ cedula +"'";
+                + "rolconduc rc INNER JOIN roles r\n"
+                + "ON rc.idrol = r.idrol\n"
+                + "WHERE rc.idcedulacond = '"+ cedula +"'";
         conector.crearConsulta(consulta);
         ArrayList<String> lista_roles = new ArrayList<>();
         String rol;
@@ -100,21 +117,21 @@ public class GestorConductorBD {
             lista_roles.add(rol);
         }
         conector.desconectarse();
-        rol = "visitante";
-        if (lista_roles.contains("docente             ")) {
-            rol = "docente";
+        rol = "Visitante";
+        if (lista_roles.contains("Docente")) {
+            rol = "Docente";
 
         } else {
-            if (lista_roles.contains("administrativo      ")) {
-                rol = "administrativo";
+            if (lista_roles.contains("Administrativo")) {
+                rol = "Administrativo";
 
             } else {
-                if (lista_roles.contains("estudiante          ")) {
-                    rol = "estudiante";
+                if (lista_roles.contains("Estudiante")) {
+                    rol = "Estudiante";
 
                 } else {
-                    if (lista_roles.contains("trabajador          ")) {
-                        rol = "trabajador";
+                    if (lista_roles.contains("Trabajador")) {
+                        rol = "Trabajador";
                     }
                 }
             }
