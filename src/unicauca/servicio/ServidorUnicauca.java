@@ -156,25 +156,15 @@ public class ServidorUnicauca implements Runnable {
      */
     public void procesarAccion(String accion, String parametros[]) throws ClassNotFoundException, SQLException {
         //Informacion del usuario
-        String user_cedula;
-        String user_nombres;
-        String user_apellidos;
-        String user_fechaNaci;
         String user_user;
         String user_password;
         Usuario usuario;
         //InformacionConductor
         String con_cedula;
-        String con_nombres;
-        String con_apellido;
-        String con_genero;
-        String con_fechaNaci;
         Conductor conductor;
         //Informacion Vehiculo
         String cedulaDueno;
-        String placa;
-        String marca;
-        String tipo;
+
 
         switch (accion) {
             case "Consultar Usuario":
@@ -219,51 +209,73 @@ public class ServidorUnicauca implements Runnable {
                 String placa_ve = parametros[1];
                 String marca_ve = parametros[2];
                 String tipo_ve = parametros[3];
-                
-                gestorConductor.agregarVehiculo(placa_ve, marca_ve, tipo_ve);
-                salidaDecorada.println("Vehiculo agregado con exito");
+                try {
+                    gestorConductor.agregarVehiculo(placa_ve, marca_ve, tipo_ve);
+                    salidaDecorada.println("Vehiculo agregado con exito");
+                } catch (Exception e) {
+                    salidaDecorada.println("Error");
+                }
+
                 break;
-            
+
             case "Registrar Conductor":
                 String cedula_con = parametros[1];
                 String nombres_con = parametros[2];
-                String apellidos_con  = parametros[3];
+                String apellidos_con = parametros[3];
                 String genero_con = parametros[4];
                 String fechaNaci = parametros[5];
+                try {
+                    gestorConductor.agregarConductor(cedula_con, nombres_con, apellidos_con, genero_con, fechaNaci);
+                    salidaDecorada.println("Conductor Agregado");
+                } catch (Exception e) {
+                    salidaDecorada.println("Error");
+                }
                 
-                gestorConductor.agregarConductor(cedula_con, nombres_con, apellidos_con, genero_con, fechaNaci);
-                salidaDecorada.println("Conductor Agregado");
                 break;
-            
+            case "Asociar Rol":
+                con_cedula = parametros[1];
+                String rol = parametros[2];
+                try {
+                    gestorConductor.asociarRol(con_cedula, rol);
+                    salidaDecorada.println("Exito");
+                } catch (Exception e) {
+                    salidaDecorada.println("Error");
+                }
+                break;
             case "Asociar Vehiculo":
                 String ced = parametros[1];
                 String ve_placa = parametros[2];
-                gestorConductor.asociarVehiculo(ced, ve_placa);
-                salidaDecorada.println("Asociacion Exitosa");
+                try {
+                    gestorConductor.asociarVehiculo(ced, ve_placa);
+                    salidaDecorada.println("Asociacion Exitosa");
+                } catch (Exception e) {
+                    salidaDecorada.println("Error");
+                }
+                
                 break;
-            
+
             case "Ingresar Vehiculo":
                 con_cedula = parametros[1];
                 ve_placa = parametros[2];
                 int bahia = Integer.parseInt(parametros[3]);
                 try {
-                   parqueadero.registrarIngreso(con_cedula,ve_placa, bahia); 
-                   salidaDecorada.println("Registro Exitoso");
+                    parqueadero.registrarIngreso(con_cedula, ve_placa, bahia);
+                    salidaDecorada.println("Registro Exitoso");
                 } catch (Exception e) {
-                    salidaDecorada.println("Fallo al registrar");
-                } 
+                    salidaDecorada.println("Error");
+                }
                 break;
-                
+
             case "Obtener Ocupados":
                 ArrayList<Bahia> bahias = new ArrayList<>();
                 bahias = parqueadero.consutarOcupados();
-                if(bahias.isEmpty()){
+                if (bahias.isEmpty()) {
                     salidaDecorada.println("Parqueadero libre");
-                }else{
+                } else {
                     salidaDecorada.println(objSerializador.serializarBahias(bahias));
                 }
                 break;
-            
+
             case "Agregar Vigilante":
                 String vig_ced = parametros[1];
                 String emp = parametros[2];
@@ -278,9 +290,21 @@ public class ServidorUnicauca implements Runnable {
                     gestorVigilante.agregarVigilante(vig_ced, emp, usu, nom, apell, gen, fecNa, cont, pues);
                     salidaDecorada.println("Registro Exitoso");
                 } catch (Exception e) {
-                    salidaDecorada.println("Fallo al registrar");
+                    salidaDecorada.println("Error");
                 }
+                break;
             
+            case "Registrar Salida":
+                String baid = parametros[1];
+                try {
+                    parqueadero.registrarSalida(baid);
+                    salidaDecorada.println("Registro Exitoso");
+                } catch (Exception e) {
+                    salidaDecorada.println("Error");
+                }
+                
+                break;
+
         }
     }
 }
