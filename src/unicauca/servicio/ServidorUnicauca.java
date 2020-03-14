@@ -165,7 +165,6 @@ public class ServidorUnicauca implements Runnable {
         //Informacion Vehiculo
         String cedulaDueno;
 
-
         switch (accion) {
             case "Consultar Usuario":
                 user_user = parametros[1];
@@ -230,7 +229,7 @@ public class ServidorUnicauca implements Runnable {
                 } catch (Exception e) {
                     salidaDecorada.println("Error");
                 }
-                
+
                 break;
             case "Asociar Rol":
                 con_cedula = parametros[1];
@@ -251,7 +250,7 @@ public class ServidorUnicauca implements Runnable {
                 } catch (Exception e) {
                     salidaDecorada.println("Error");
                 }
-                
+
                 break;
 
             case "Ingresar Vehiculo":
@@ -293,7 +292,7 @@ public class ServidorUnicauca implements Runnable {
                     salidaDecorada.println("Error");
                 }
                 break;
-            
+
             case "Registrar Salida":
                 String baid = parametros[1];
                 try {
@@ -302,7 +301,42 @@ public class ServidorUnicauca implements Runnable {
                 } catch (Exception e) {
                     salidaDecorada.println("Error");
                 }
+
+                break;
+            case "Horas Congestion":
+
+                ArrayList<IntervaloCongestion> congestion = new ArrayList<>();
+                congestion = parqueadero.horasCongestion();
+                if(congestion.isEmpty()){
+                    salidaDecorada.println("Vacio");
+                }else{
+                    salidaDecorada.println(objSerializador.serializarHorasConges(congestion));
+                }
                 
+                break;
+            
+            case "Agregar Multa":
+                System.out.println("Entro a registrar multa");
+                String placa = parametros[1];
+                String descripcion = parametros[2];
+                String foto = parametros[3];
+                try {
+                    gestorConductor.registrarMulta(placa, descripcion, foto);
+                    salidaDecorada.print("Registro Exitoso");
+                } catch (Exception e) {
+                    salidaDecorada.println("Error");
+                }
+                
+                break;
+            case "Consultar Multas":
+                String placa_m = parametros[1];
+                ArrayList<Multa> multas = new ArrayList<>();
+                multas = gestorConductor.consutarMulta(placa_m);
+                if(multas.isEmpty()){
+                    salidaDecorada.println("Vacio");
+                }else{
+                    salidaDecorada.println(objSerializador.serializarMultas(multas));
+                }
                 break;
 
         }

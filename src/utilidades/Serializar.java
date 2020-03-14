@@ -65,14 +65,45 @@ public class Serializar {
         }
         return array.toString();
     }
-    
-    public JsonObject parseToBahia(Bahia objBahia){
+    public String serializarHorasConges(ArrayList<IntervaloCongestion> objIntervalo){
+        JsonArray array = new JsonArray();
+        JsonObject objSon;
+        for(IntervaloCongestion i : objIntervalo){
+            objSon = parseToIntervalo(i);
+            array.add(objSon);
+        }
+        return array.toString();
+    }
+    public String serializarMultas(ArrayList<Multa> objMultas){
+        JsonArray array = new JsonArray();
+        JsonObject objJson;
+        for(Multa m : objMultas){
+            objJson = parseToMulta(m);
+            array.add(objJson);
+        }
+        return array.toString();
+    }
+    private JsonObject parseToMulta(Multa objMulta){
+        JsonObject jsonobj = new JsonObject();
+        jsonobj.addProperty("descripcion", objMulta.getDescripcion());
+        jsonobj.addProperty("fecha", objMulta.getFecha());
+        jsonobj.addProperty("foto", objMulta.getFoto());
+        return jsonobj;
+        
+    }
+    private JsonObject parseToIntervalo(IntervaloCongestion objIntervalo){
+        JsonObject jsonobj = new JsonObject();
+        jsonobj.addProperty("intervalo", objIntervalo.getIntervalo());
+        jsonobj.addProperty("cantidad", objIntervalo.getCantidad());
+        return jsonobj;
+    }
+    private JsonObject parseToBahia(Bahia objBahia){
         JsonObject jsonobj = new JsonObject();
         jsonobj.addProperty("identificador", objBahia.getIdentificador());
         return jsonobj;
     }
     
-    public JsonObject parseToVehiculo(Vehiculo objVehiculo) {
+    private JsonObject parseToVehiculo(Vehiculo objVehiculo) {
         JsonObject jsonobj = new JsonObject();
 
         jsonobj.addProperty("placa", objVehiculo.getPlaca());

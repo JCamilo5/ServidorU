@@ -44,7 +44,7 @@ public class ConectorJdbc {
             Class.forName("org.postgresql.Driver");
             conexion = DriverManager.getConnection(url, usuario, contrasenia);
             if (conexion != null) {
-                System.out.println("Conecto!!!!!!");
+                
             }
 
         } catch (Exception e) {

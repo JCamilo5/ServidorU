@@ -7,6 +7,7 @@ package unicauca.negocio;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -45,7 +46,7 @@ public class GestorConductorBD {
     public void asociarRol(String cedula, String rol) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         String sql = "INSERT INTO rolconduc (idcedulacond,idrol)\n"
-                + "values('"+cedula+"','"+rol+"')";
+                + "values('" + cedula + "','" + rol + "')";
         conector.actualizar(sql);
         conector.desconectarse();
     }
@@ -104,6 +105,66 @@ public class GestorConductorBD {
         }
         conector.desconectarse();
         return mis_vehiculos;
+    }
+
+    /**
+     * Metodo que registra una multa
+     *
+     * @param placa placa del vehiculo
+     * @param descripcion descripcion del porque la multa
+     * @param foto direccion en el equipo donde esta la foto
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public void registrarMulta(String placa, String descripcion, String foto) throws ClassNotFoundException, SQLException {
+        conector.conectarse();
+        String fecha = getFechaActual();
+        String sql = "INSERT INTO multa(mulplaca,mulfecha,muldescripcion,mulfotografia)\n"
+                + "VALUES ('" + placa + "','" + fecha + "','" + descripcion + "','" + foto + "');";
+        conector.actualizar(sql);
+        conector.desconectarse();
+    }
+    /**
+     * 
+     * @param placaV
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public ArrayList<Multa> consutarMulta(String placaV) throws ClassNotFoundException, SQLException {
+        conector.conectarse();
+        String sql = "SELECT * FROM MULTA WHERE mulplaca = '" + placaV + "';";
+        conector.crearConsulta(sql);
+        ArrayList<Multa> multas = new ArrayList<>();
+        Multa multa;
+        while (conector.getResultado().next()) {
+            String fecha = conector.getResultado().getString("mulfecha");
+            String descripcion = conector.getResultado().getString("muldescripcion");
+            String foto = conector.getResultado().getString("mulfotografia");
+            multa = new Multa(descripcion, fecha, foto);
+            multas.add(multa);
+        }
+        conector.desconectarse();
+        return multas;
+
+    }
+
+    /**
+     * Metodo que obtiene la fecha del sistema
+     *
+     * @return fecha actual
+     */
+    private String getFechaActual() {
+        Calendar fecha = Calendar.getInstance();
+        int año = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH);
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        int hora = fecha.get(Calendar.HOUR_OF_DAY);
+        int minuto = fecha.get(Calendar.MINUTE);
+
+        String fActual = dia + "-" + (mes + 1) + "-" + año + " " + hora + ":" + minuto;
+
+        return fActual;
     }
 
     /**

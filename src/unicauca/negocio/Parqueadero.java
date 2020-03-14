@@ -61,22 +61,49 @@ public class Parqueadero {
         conector.desconectarse();
         return bahias;
     }
+
     /**
      * Metodo que registra la salida de un vehiculo
+     *
      * @param bahia bahia a liberar
      * @throws ClassNotFoundException
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void registrarSalida(String bahia) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         String fecha = getFechaActual();
-        String sql = "UPDATE ingreso set fecha_salida = '"+fecha+"'"
-                + " where baid = "+bahia+" and fecha_salida is null;";
+        String sql = "UPDATE ingreso set fecha_salida = '" + fecha + "'"
+                + " where baid = " + bahia + " and fecha_salida is null;";
         conector.actualizar(sql);
         conector.desconectarse();
     }
+
+    public ArrayList<IntervaloCongestion> horasCongestion() throws ClassNotFoundException, SQLException {
+        conector.conectarse();
+        String sql = "select \n"
+                + "concat( EXTRACT(hour from fecha_entrada),' a ',concat( EXTRACT(hour from fecha_entrada), ':59')) as intervalo,\n"
+                + "count(*) as numero_entradas\n"
+                + "from \n"
+                + "    ingreso\n"
+                + "where EXTRACT(day from fecha_entrada) = EXTRACT(day from(select CURRENT_DATE))\n"
+                + "GROUP by \n"
+                + "    DATE(fecha_entrada),EXTRACT(hour from fecha_entrada)";
+        conector.crearConsulta(sql);
+        ArrayList<IntervaloCongestion> intervalos = new ArrayList<>();
+        IntervaloCongestion tmpIntervalo;
+        while (conector.getResultado().next()) {
+            String intervalo = conector.getResultado().getString("intervalo");
+            String cantidad = conector.getResultado().getString("numero_entradas");
+            tmpIntervalo = new IntervaloCongestion(intervalo, cantidad);
+            intervalos.add(tmpIntervalo);
+        }
+        conector.desconectarse();
+        return intervalos;
+    }
+
     /**
      * Metodo que obtiene la fecha del sistema
+     *
      * @return fecha actual
      */
     private String getFechaActual() {
