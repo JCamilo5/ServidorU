@@ -8,7 +8,7 @@ package unicauca.negocio;
 import java.util.ArrayList;
 
 /**
- *
+ *Clase que representa a un conductor
  * @author JuanCamilo
  */
 public class Conductor {
@@ -22,7 +22,15 @@ public class Conductor {
     public Conductor(){
           
     }
-
+    /**
+     * Contructor parametrizado que recibe los atributos de un condductor
+     * @param cedula String cedula del conductor 
+     * @param nombres String nombre del conductor
+     * @param Apellidos String apellido de un conductor
+     * @param genero String genero de un conductor
+     * @param fechaNaci String fecha de nacimiento de un conductor
+     * @param rol rol de un conductor
+     */
     public Conductor(String cedula, String nombres, String Apellidos, String genero, String fechaNaci,String rol) {
         this.cedula = cedula;
         this.nombres = nombres;

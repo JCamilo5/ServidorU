@@ -338,7 +338,18 @@ public class ServidorUnicauca implements Runnable {
                     salidaDecorada.println(objSerializador.serializarMultas(multas));
                 }
                 break;
-
+            
+            case "Obtener Informe":
+                String ced_inf  = parametros[1];
+                ArrayList<Informe> informes = new ArrayList<>();
+                informes = gestorConductor.reporteIngreso(ced_inf);
+                if(informes.isEmpty()){
+                    salidaDecorada.println("Vacio");
+                }else{
+                    salidaDecorada.println(objSerializador.serializarInforme(informes));
+                }           
+                   
+                break;
         }
     }
 }

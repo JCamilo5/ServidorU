@@ -18,7 +18,20 @@ public class GestorVigilanteBD {
     public GestorVigilanteBD() {
         conector = ConectorJdbc.getConector();
     }
-
+    /**
+     * Metodo que agrega un vigilante a la base de datos
+     * @param ced cedula del vigilante
+     * @param emp empresa a la cual pertenece
+     * @param usua usuario del vigilante
+     * @param noms nombres del vigilante
+     * @param apells apellidos del vigilante
+     * @param genero genero del vigilante
+     * @param fechaNaci fecha de nacimiento del vigilante
+     * @param contra contraseña del vigilante
+     * @param puesto ubicacion 
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void agregarVigilante(String ced, String emp, String usua, String noms, String apells, String genero, String fechaNaci, String contra, String puesto) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         

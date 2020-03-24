@@ -20,7 +20,14 @@ public class GestorUsuarioBD {
     public GestorUsuarioBD() {
         this.conector = ConectorJdbc.getConector();
     }
-
+    /**
+     * Metodo que retorna un usuario de la base de datos
+     * @param user usuario
+     * @param password contraseña
+     * @return usuario
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public Usuario consultarUsuario(String user, String password) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         Usuario miUsuario = null;

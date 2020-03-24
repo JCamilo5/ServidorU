@@ -32,7 +32,7 @@ public class ConectorJdbc {
      * Metodo estatico que devuelve una sola instancia de la clase
      * @return unica instancia de la clase
      */
-    public  static ConectorJdbc getConector(){
+    public  static synchronized ConectorJdbc getConector(){
         if(conector == null){
             conector = new ConectorJdbc();
         }

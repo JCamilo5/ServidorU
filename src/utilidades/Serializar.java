@@ -83,6 +83,21 @@ public class Serializar {
         }
         return array.toString();
     }
+    public String serializarInforme(ArrayList<Informe> objInformes){
+        JsonArray array = new JsonArray();
+        JsonObject objJson;
+        for(Informe info:objInformes){
+            objJson= parseToInforme(info);
+            array.add(objJson);
+        }
+        return array.toString();
+    }
+    private JsonObject parseToInforme(Informe objInfrome){
+        JsonObject jsonobj = new JsonObject();
+        jsonobj.addProperty("dia", objInfrome.getDia());
+        jsonobj.addProperty("canti_entrada", objInfrome.getCanti_entrada());
+        return  jsonobj;
+    }
     private JsonObject parseToMulta(Multa objMulta){
         JsonObject jsonobj = new JsonObject();
         jsonobj.addProperty("descripcion", objMulta.getDescripcion());
@@ -91,6 +106,11 @@ public class Serializar {
         return jsonobj;
         
     }
+    /**
+     * Metodo que devuelve in intervalo de congestion serializado
+     * @param objIntervalo objto json
+     * @return 
+     */
     private JsonObject parseToIntervalo(IntervaloCongestion objIntervalo){
         JsonObject jsonobj = new JsonObject();
         jsonobj.addProperty("intervalo", objIntervalo.getIntervalo());

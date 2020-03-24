@@ -33,7 +33,6 @@ public class GestorConductorBD {
      * @throws SQLException
      */
     public void agregarConductor(String cedula, String nombres, String apellidos, String genero, String fechaNaci) throws ClassNotFoundException, SQLException {
-        //Las columnas de tipo var charying requieren ir entre comillas dobles por eso ls backslash
         conector.conectarse();
         String sqlCo = "INSERT INTO "
                 + "conductor "
@@ -42,7 +41,13 @@ public class GestorConductorBD {
         conector.actualizar(sqlCo);
         conector.desconectarse();
     }
-
+    /**
+     * Metodo que asocia un rol con un codnuctor
+     * @param cedula cedula del conductor
+     * @param rol rol del condcutor
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void asociarRol(String cedula, String rol) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         String sql = "INSERT INTO rolconduc (idcedulacond,idrol)\n"
@@ -50,7 +55,14 @@ public class GestorConductorBD {
         conector.actualizar(sql);
         conector.desconectarse();
     }
-
+    /**
+     * Metodo que agrega un vehiculo a la base de datos 
+     * @param placa placa del vehiculo
+     * @param marca marca del vehiculo
+     * @param tipo tipo , automovil o moto
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void agregarVehiculo(String placa, String marca, String tipo) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         String sqlVe = "INSERT INTO "
@@ -60,7 +72,13 @@ public class GestorConductorBD {
         conector.actualizar(sqlVe);
         conector.desconectarse();
     }
-
+    /**
+     * Metodo que asocia un vehiculo y un conductor
+     * @param cedula cedula del conductor
+     * @param placa placa del vehiculo
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void asociarVehiculo(String cedula, String placa) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         String sql = "INSERT INTO conducvehicul (idcedulacond,noplaca) values "
@@ -68,7 +86,13 @@ public class GestorConductorBD {
         conector.actualizar(sql);
         conector.desconectarse();
     }
-
+    /**
+     * Metodo que consulta un conductor
+     * @param cedula criterio de busqueda
+     * @return 1 conductor
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public Conductor consultarConductor(String cedula) throws ClassNotFoundException, SQLException {
         conector.conectarse();
 
@@ -86,7 +110,13 @@ public class GestorConductorBD {
         conector.desconectarse();
         return conductor;
     }
-
+    /**
+     * Metodo que devuelve los vehiculos asociados a un conductor
+     * @param cedula criterio de busqueda
+     * @return arreglo de vehiculos
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public ArrayList<Vehiculo> consultarVehiculoCon(String cedula) throws ClassNotFoundException, SQLException {
         conector.conectarse();
         String consulta = "SELECT v.noplaca,v.marca,v.tipo\n"
@@ -124,12 +154,13 @@ public class GestorConductorBD {
         conector.actualizar(sql);
         conector.desconectarse();
     }
+
     /**
-     * 
+     *
      * @param placaV
      * @return
      * @throws ClassNotFoundException
-     * @throws SQLException 
+     * @throws SQLException
      */
     public ArrayList<Multa> consutarMulta(String placaV) throws ClassNotFoundException, SQLException {
         conector.conectarse();
@@ -147,6 +178,54 @@ public class GestorConductorBD {
         conector.desconectarse();
         return multas;
 
+    }
+    /**
+     * Metodo que retorna los reportes de ingreso  para un conductor
+     * @param cedula cedula del conductor
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public ArrayList<Informe> reporteIngreso(String cedula) throws ClassNotFoundException, SQLException {
+        conector.conectarse();
+        String sql = "select (EXTRACT(dow from fecha_entrada)) as fecha , count(*) from ingreso \n"
+                + "WHERE idcedulacond = '"+cedula+"' and fecha_entrada\n"
+                + "BETWEEN (SELECT CURRENT_DATE - integer '5') and (SELECT CURRENT_DATE )\n"
+                + "group by fecha";
+        conector.crearConsulta(sql);
+        ArrayList<Informe> informes = new ArrayList<>();
+        Informe informe;
+        while(conector.getResultado().next()){
+            String cantidad = conector.getResultado().getString("count");
+            String dia = conector.getResultado().getString("fecha");
+            switch(dia){
+                case "1":
+                    dia = "Lunes";
+                    break;
+                case "2":
+                    dia = "Martes";
+                    break;
+                case "3":
+                    dia = "Miercoles";
+                    break;
+                case "4":
+                    dia = "Jueves";
+                    break;
+                case "5":
+                    dia = "Viernes";
+                    break;
+                case "6":
+                    dia = "Sabado";
+                    break;
+                case "7":
+                    dia = "Domingo";
+                    break;                       
+            }
+            
+            informe = new Informe(dia,cantidad);
+            informes.add(informe);
+        }
+        return informes;
     }
 
     /**
