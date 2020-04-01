@@ -55,7 +55,8 @@ public class Parqueadero {
         ArrayList<Bahia> bahias = new ArrayList<>();
         while (conector.getResultado().next()) {
             String id = conector.getResultado().getString("baid");
-            Bahia bahia = new Bahia(id);
+            String estado = conector.getResultado().getString("baestado");
+            Bahia bahia = new Bahia(id,estado);
             bahias.add(bahia);
         }
         conector.desconectarse();
@@ -99,6 +100,21 @@ public class Parqueadero {
         }
         conector.desconectarse();
         return intervalos;
+    }
+
+    public ArrayList<Bahia> consultarTodas() throws ClassNotFoundException, SQLException {
+        conector.conectarse();
+        String sql = "SELECT * FROM bahia";
+        conector.crearConsulta(sql);
+        ArrayList<Bahia> bahias = new ArrayList<>();
+        while (conector.getResultado().next()) {
+            String id = conector.getResultado().getString("baid");
+            String estado = conector.getResultado().getString("baestado");
+            Bahia bahia = new Bahia(id,estado);
+            bahias.add(bahia);
+        }
+        conector.desconectarse();
+        return bahias;
     }
 
     /**

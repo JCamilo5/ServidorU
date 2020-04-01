@@ -15,12 +15,15 @@ public class Bahia {
      * Idetnificador de la bahia
      */
     private String identificador;
+    private String estado;
     /**
      * Contructor parametrizado que recibe el identificador de una bahia
      * @param identificador String identificador
+     * @param estado estado de la bahia
      */
-    public Bahia(String identificador) {
+    public Bahia(String identificador,String estado) {
         this.identificador = identificador;
+        this.estado = estado;
     }
     /**
      * Metodo que retorna el identificador de una bahia
@@ -29,5 +32,10 @@ public class Bahia {
     public String getIdentificador() {
         return identificador;
     }
+
+    public String getEstado() {
+        return estado;
+    }
+    
     
 }

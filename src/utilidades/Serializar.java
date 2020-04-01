@@ -92,6 +92,21 @@ public class Serializar {
         }
         return array.toString();
     }
+    public String serializarTodasBahias(ArrayList<Bahia> objBahia){
+        JsonArray array = new JsonArray();
+        JsonObject objJson;
+        for(Bahia b :objBahia){
+            objJson = parseToAllBahias(b);
+            array.add(objJson);
+        }
+        return array.toString();
+    }
+    private JsonObject parseToAllBahias(Bahia objBahia){
+        JsonObject jsonobj = new JsonObject();
+        jsonobj.addProperty("identificador", objBahia.getIdentificador());
+        jsonobj.addProperty("estado", objBahia.getEstado());
+        return  jsonobj;
+    }
     private JsonObject parseToInforme(Informe objInfrome){
         JsonObject jsonobj = new JsonObject();
         jsonobj.addProperty("dia", objInfrome.getDia());

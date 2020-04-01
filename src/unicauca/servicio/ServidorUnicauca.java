@@ -260,10 +260,12 @@ public class ServidorUnicauca implements Runnable {
                 try {
                     parqueadero.registrarIngreso(con_cedula, ve_placa, bahia);
                     salidaDecorada.println("Registro Exitoso");
+                    break;
                 } catch (Exception e) {
                     salidaDecorada.println("Error");
+                    break;
                 }
-                break;
+
 
             case "Obtener Ocupados":
                 ArrayList<Bahia> bahias = new ArrayList<>();
@@ -299,7 +301,9 @@ public class ServidorUnicauca implements Runnable {
                     parqueadero.registrarSalida(baid);
                     salidaDecorada.println("Registro Exitoso");
                 } catch (Exception e) {
+                    
                     salidaDecorada.println("Error");
+                    break;
                 }
 
                 break;
@@ -349,6 +353,12 @@ public class ServidorUnicauca implements Runnable {
                     salidaDecorada.println(objSerializador.serializarInforme(informes));
                 }           
                    
+                break;
+                
+            case "Obtener Todas":
+                ArrayList<Bahia> puestos = new ArrayList<>();
+                puestos = parqueadero.consultarTodas();
+                salidaDecorada.println(objSerializador.serializarTodasBahias(puestos));
                 break;
         }
     }
